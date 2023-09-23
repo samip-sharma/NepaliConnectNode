@@ -1,8 +1,8 @@
 # Use an official Node.js runtime as the base image
-FROM node:14
+FROM node:20.6.0
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /src
 
 # Copy package.json and package-lock.json to the container
 COPY package*.json ./
@@ -14,7 +14,7 @@ RUN yarn install
 COPY . .
 
 # Expose the port your application will run on (adjust as needed)
-EXPOSE 3000
+EXPOSE 3001
 
 # Define the command to run your application
 CMD ["yarn", "start"]
