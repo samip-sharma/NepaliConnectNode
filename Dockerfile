@@ -1,20 +1,18 @@
-# Use an official Node.js runtime as the base image
-FROM node:20.6.0
+# Installs Node.js image
+FROM node:16.13.1-alpine3.14
 
-# Set the working directory in the container
-WORKDIR /src
+# sets the working directory for any RUN, CMD, COPY command
+# all files we put in the Docker container running the server will be in /usr/src/app (e.g. /usr/src/app/package.json)
+WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the container
-COPY package*.json ./
+# Copies package.json, package-lock.json, tsconfig.json, .env to the root of WORKDIR
+COPY ["package.json", "yarn.lock", "tsconfig.json", ".env", "./prisma", "./"]
 
-# Install Node.js dependencies using Yarn
+# Copies everything in the src directory to WORKDIR/src
+COPY ./src ./src
+
+# Installs all packages
 RUN yarn install
 
-# Copy the rest of the application code to the container
-COPY . .
-
-# Expose the port your application will run on (adjust as needed)
-EXPOSE 3001
-
-# Define the command to run your application
-CMD ["yarn", "start"]
+# Runs the dev npm script to build & start the server
+CMD yarn start

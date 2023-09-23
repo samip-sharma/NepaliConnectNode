@@ -1,31 +1,26 @@
-version: "3"
-
+version: "3.8"
 services:
-  # Node.js application service
-  node-app:
-    build:
-      context: . # Use the current directory as the build context
-      dockerfile: Dockerfile # Specify the Dockerfile for the Node.js app
+  api:
+    container_name: api
+    restart: always
+    build: .
     ports:
-      - "3000:3000" # Map host port to container port
+      - 3000:3000
     depends_on:
-      - postgres # Ensure the PostgreSQL container starts before the app
-    environment:
-      # Define environment variables for your Node.js app
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: 5434
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
-
-  # PostgreSQL service
-  postgres:
-    image: postgres:13 # Use the official PostgreSQL image
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+      - db
     volumes:
-      - ./pgdata:/var/lib/postgresql/data # Persist PostgreSQL data between container restarts
+      - .:/usr/src/app
+
+  db:
+    container_name: postgres
+    image: postgres
     ports:
-      - "5432:5432" # Map host port to container port
+      - "5434:5434"
+    volumes:
+      - data:/data/db
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+
+volumes:
+  data: {}
