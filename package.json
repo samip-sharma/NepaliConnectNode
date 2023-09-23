@@ -2,11 +2,22 @@
   "name": "nepaliconnectnode",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "pord": "node ./src/index.js"
+    "copy": "node -e \"const fs = require('fs'); const data = fs.readFileSync('.env.example'); fs.writeFileSync('.env', data);\"",
+    "initialize": "yarn copy && docker run --name pg-nc -p  5432:5432 -e POSTGRES_PASSWORD=hello -e POSTGRES_USER=hello -d postgres && yarn",
+    "runpostgres": "docker start pg-nc",
+    "otherstart": "yarn runpostgres && nodemon index.js",
+    "pord": "node ./src/index.js",
+    "start": "./scripts/dev.sh"
   },
+  "copyFiles": [
+    {
+      "from": ".env.example",
+      "to": ".env"
+    }
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -19,11 +30,12 @@
     "express": "^4.18.2",
     "express-graphql": "^0.12.0",
     "graphql": "^16.8.1",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "prisma": "^5.3.1"
+    "prettier": "^3.0.3",
+    "prisma": "^5.3.1",
+    "typescript": "^5.2.2"
   }
 }
