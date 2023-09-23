@@ -11,8 +11,10 @@
     "otherstart": "yarn runpostgres && nodemon index.js",
     "pord": "node ./src/index.js",
     "start": "./scripts/dev.sh",
-    "migrate": "npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql",
-    "dbapply" : "npx prisma migrate resolve --applied 0_init"
+    "migrate": "npx prisma migrate dev",
+    "dbapply": "npx prisma migrate resolve --applied 0_init",
+    "dbpush": "npx prisma db push",
+    "dbweb": "npx prisma studio"
   },
   "copyFiles": [
     {
