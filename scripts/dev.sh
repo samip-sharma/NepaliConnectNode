@@ -11,4 +11,6 @@ docker start pg-nc
 
 yarn install
 
-nodemon index.js
+yarn run tsc
+
+ts-node --project tsconfig.node.json src/index.ts
